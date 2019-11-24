@@ -35,8 +35,6 @@ class TimesLiveSpider(scrapy.Spider):
         if self.is_politics_page(response.url):
             page_url = self.get_politics_page_name_substring(response.url)
             for article in response.css('div.article-widgets'):
-                print(dir(article))
-                print(type(article))
                 text = article.get()
                 article_body = article.css(".article-widget:not([class*='article-widget-related_articles'])").xpath('.//text()').extract()
                 article_text = '\n'.join(article_body)
