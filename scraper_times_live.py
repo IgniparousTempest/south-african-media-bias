@@ -56,5 +56,5 @@ class TimesLiveSpider(scrapy.Spider):
                 }
 
         for href in response.css('a::attr(href)'):
-            if self.is_politics_page(href.get()):
-                yield response.follow(href, self.parse)
+            # if self.is_politics_page(href.get()):
+            yield response.follow(href, self.parse)
