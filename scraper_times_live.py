@@ -23,6 +23,12 @@ class TimesLiveSpider(scrapy.Spider):
         return re.search('https:\/\/www\.timeslive\.co\.za\/politics\/(.*)\/', url).string
 
     @classmethod
+    def get_month_year(cls, url: str):
+        page_url = cls.get_politics_page_name_substring(url)
+        date_match = re.search(r'^(\d{4})-(\d{2})-\d{2}', page_url)
+        return date_match.group(1), date_match.group(2)
+
+    @classmethod
     def is_politics_page(cls, url: str) -> bool:
         try:
             cls.get_politics_page_name_substring(url)
@@ -39,8 +45,11 @@ class TimesLiveSpider(scrapy.Spider):
                 article_body = article.css(".article-widget:not([class*='article-widget-related_articles'])").xpath('.//text()').extract()
                 article_text = '\n'.join(article_body)
                 mentions = MentionsParser.calculate_mentions(article_text)
+                year, month = self.get_month_year(response.url)
                 yield {
                     'url': page_url,
+                    'year': year,
+                    'month': month,
                     'anc': mentions.anc,
                     'da': mentions.da,
                     'eff': mentions.eff,
