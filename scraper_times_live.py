@@ -20,7 +20,7 @@ class TimesLiveSpider(scrapy.Spider):
     def get_politics_page_name_substring(cls, url: str):
         if url.startswith('/'):
             url = 'https://www.timeslive.co.za' + url
-        return re.search('https:\/\/www\.timeslive\.co\.za\/politics\/(.*)\/', url).string
+        return re.search('https:\/\/www\.timeslive\.co\.za\/politics\/(.*)\/', url).group(1)
 
     @classmethod
     def get_month_year(cls, url: str):
