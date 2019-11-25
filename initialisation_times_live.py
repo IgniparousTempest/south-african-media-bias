@@ -1,8 +1,11 @@
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 import time
 
 url = "https://www.timeslive.co.za/politics/"
-driver = webdriver.Firefox()
+options = Options()
+options.headless = True
+driver = webdriver.Firefox(options=options)
 driver.get(url)
 html = driver.page_source.encode('utf-8')
 page_num = 0
