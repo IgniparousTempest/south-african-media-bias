@@ -19,6 +19,12 @@ class TimesLiveSpider(scrapy.Spider):
         super().__init__(**kwargs)  # python3
 
     @classmethod
+    def is_in_domain(cls, url: str) -> bool:
+        if url.startswith('/'):
+            url = 'https://www.timeslive.co.za' + url
+        return re.search('https:\/\/www\.timeslive\.co\.za\/', url) is not None
+
+    @classmethod
     def get_politics_page_name_substring(cls, url: str):
         if url.startswith('/'):
             url = 'https://www.timeslive.co.za' + url
@@ -58,5 +64,5 @@ class TimesLiveSpider(scrapy.Spider):
                 }
 
         for href in response.css('a::attr(href)'):
-            # if self.is_politics_page(href.get()):
-            yield response.follow(href, self.parse)
+            if self.is_politics_page(href.get()):
+                yield response.follow(href, self.parse)
