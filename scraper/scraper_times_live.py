@@ -3,7 +3,7 @@ import re
 import scrapy
 from scrapy.http import Response
 
-from mentions import MentionsParser
+from scraper.mentions import MentionsParser
 
 
 class TimesLiveSpider(scrapy.Spider):

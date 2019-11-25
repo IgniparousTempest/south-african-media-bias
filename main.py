@@ -1,6 +1,6 @@
 from scrapy.crawler import CrawlerProcess
 
-from scraper_times_live import TimesLiveSpider
+from scraper.scraper_times_live import TimesLiveSpider
 
 if __name__ == '__main__':
     process = CrawlerProcess({
