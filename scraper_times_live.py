@@ -12,8 +12,10 @@ class TimesLiveSpider(scrapy.Spider):
         'https://www.timeslive.co.za/politics/',
     ]
 
-    def __init__(self, years=[], **kwargs):
-        self.years = years
+    def __init__(self, start_urls_path=None, **kwargs):
+        if start_urls_path is not None:
+            with open(start_urls_path) as f:
+                self.start_urls = f.read().splitlines()
         super().__init__(**kwargs)  # python3
 
     @classmethod

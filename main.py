@@ -9,5 +9,5 @@ if __name__ == '__main__':
         'FEED_URI': 'results/times_live.json'
     })
 
-    process.crawl(TimesLiveSpider, [])
+    process.crawl(TimesLiveSpider, 'results/times_live.urls')
     process.start()
