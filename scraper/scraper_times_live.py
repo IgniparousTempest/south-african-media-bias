@@ -22,7 +22,7 @@ class TimesLiveSpider(scrapy.Spider):
     def is_in_domain(cls, url: str) -> bool:
         if url.startswith('/'):
             url = 'https://www.timeslive.co.za' + url
-        return re.search('https:\/\/www\.timeslive\.co\.za\/', url) is not None
+        return url.startswith('https:\/\/www\.timeslive\.co\.za\/')
 
     @classmethod
     def get_politics_page_name_substring(cls, url: str):
