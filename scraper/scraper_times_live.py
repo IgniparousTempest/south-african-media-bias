@@ -14,7 +14,7 @@ class TimesLiveSpider(scrapy.Spider):
 
     def __init__(self, start_urls_path=None, **kwargs):
         if start_urls_path is not None:
-            with open(start_urls_path) as f:
+            with open(start_urls_path, 'r') as f:
                 self.start_urls = f.read().splitlines()
         super().__init__(**kwargs)  # python3
 
