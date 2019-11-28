@@ -12,7 +12,7 @@ class IOLSpider(NewsSpider):
         super().__init__('iol', 'https://www.iol.co.za/news/politics/', 'https://www.iol.co.za', r'https://www\.iol\.co\.za/news/politics/(.*)', **kwargs)  # python3
 
     def get_month_year(self, response: Response):
-        date_string = response.css('span[itemprop="datePublished"]::text').extract_first().split('-')
+        date_string = response.css('span[itemprop="datePublished"]::attr(content)').extract_first().split('-')
         return date_string[0], date_string[1]
 
     @overrides
@@ -21,9 +21,9 @@ class IOLSpider(NewsSpider):
         article_body = response.css(".article-body").xpath('.//text()').extract()
         article_text = '\n'.join(article_body)
         mentions = MentionsParser.calculate_mentions(article_text)
-        year, month = self.get_month_year(response.url)
+        year, month = self.get_month_year(response)
         print(page_url, year, month)
-        yield {
+        return {
             'url': page_url,
             'year': year,
             'month': month,
