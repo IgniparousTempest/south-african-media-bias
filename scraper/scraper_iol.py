@@ -9,7 +9,7 @@ class IOLSpider(NewsSpider):
     name = 'iol'
 
     def __init__(self, start_urls_path=None, **kwargs):
-        super().__init__('iol', 'https://www.iol.co.za/news/politics/', 'https://www.iol.co.za', r'https://www\.iol\.co\.za/news/politics/(.*)/', **kwargs)  # python3
+        super().__init__('iol', 'https://www.iol.co.za/news/politics/', 'https://www.iol.co.za', r'https://www\.iol\.co\.za/news/politics/(.*)', **kwargs)  # python3
 
     def get_month_year(self, response: Response):
         date_string = response.css('span[itemprop="datePublished"]::text').extract_first().split('-')
