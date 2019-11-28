@@ -6,6 +6,7 @@ from scraper.scraper_parent import NewsSpider
 
 
 class IOLSpider(NewsSpider):
+    name = 'iol'
 
     def __init__(self, start_urls_path=None, **kwargs):
         super().__init__('iol', 'https://www.iol.co.za/news/politics/', 'https://www.iol.co.za', r'https://www\.iol\.co\.za/news/politics/(.*)/', **kwargs)  # python3
