@@ -22,13 +22,13 @@ class TimesLiveSpider(scrapy.Spider):
     def is_in_domain(cls, url: str) -> bool:
         if url.startswith('/'):
             url = 'https://www.timeslive.co.za' + url
-        return url.startswith('https:\/\/www\.timeslive\.co\.za\/')
+        return url.startswith('https://www.timeslive.co.za/')
 
     @classmethod
     def get_politics_page_name_substring(cls, url: str):
         if url.startswith('/'):
             url = 'https://www.timeslive.co.za' + url
-        return re.search('https:\/\/www\.timeslive\.co\.za\/politics\/(.*)\/', url).group(1)
+        return re.search(r'https://www\.timeslive\.co\.za/politics/(.*)/', url).group(1)
 
     @classmethod
     def get_month_year(cls, url: str):

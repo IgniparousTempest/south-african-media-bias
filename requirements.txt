@@ -7,3 +7,4 @@ seaborn==0.9.0
 # Web scraper
 scrapy==1.8.0
 selenium==3.141.0
+overrides==2.5
