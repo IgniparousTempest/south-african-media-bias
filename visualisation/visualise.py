@@ -83,9 +83,9 @@ def plot_stacked_area(from_year=2016):
     plt.show()
 
 
-def plot_separate_area(from_year=2016):
+def plot_separate_area(json_path, from_year=2016):
     # Get data
-    raw_data, number_of_articles = counts('../results/times_live.json')
+    raw_data, number_of_articles = counts(json_path)
 
     xs = []
     anc, da, eff = [], [], []
@@ -131,4 +131,5 @@ def plot_separate_area(from_year=2016):
 
 if __name__ == '__main__':
     plot_stacked_area()
-    plot_separate_area()
+    plot_separate_area('../results/times_live.json') 
+    plot_separate_area('../results/iol.json')

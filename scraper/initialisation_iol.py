@@ -32,11 +32,9 @@ for elem in elems:
 print(f'Found {len(links)} links')
 # Write unique links to file
 with open('results/iol.urls', 'w') as f:
-    num_links = 0
-    for elem in list(set(links)):
-        f.write(href)
-        f.write('\n')
-        num_links += 1
-    print(f'Found unique {num_links} links')
+    links = list(set(links))
+    for elem in links:
+        f.write(f'{elem}\n')
+    print(f'Found unique {len(links)} links')
 
 html = driver.page_source.encode('utf-8')
