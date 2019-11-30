@@ -20,7 +20,6 @@ while True:
     if outerHTML == outerHTML_new:
         break
     outerHTML = outerHTML_new
-    break
 print('Done loading page')
 
 elems = driver.find_elements_by_xpath("//a[@href]")
