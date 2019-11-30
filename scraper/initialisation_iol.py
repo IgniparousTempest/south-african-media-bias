@@ -20,6 +20,7 @@ while True:
     if outerHTML == outerHTML_new:
         break
     outerHTML = outerHTML_new
+    break
 print('Done loading page')
 
 elems = driver.find_elements_by_xpath("//a[@href]")
@@ -27,7 +28,8 @@ elems = driver.find_elements_by_xpath("//a[@href]")
 links = []
 for elem in elems:
     href = elem.get_attribute("href")
-    if href.startswith('https://www.iol.co.za/news/politics/'):
+    # An example news page is 'https://www.iol.co.za/news/politics/jacob-zuma-will-finally-have-his-day-in-court-38238221'
+    if href.startswith('https://www.iol.co.za/news/politics/'):# and href.split('-')[-1].isnumeric():
         links.append(href)
 print(f'Found {len(links)} links')
 # Write unique links to file
