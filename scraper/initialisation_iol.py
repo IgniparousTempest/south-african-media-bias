@@ -11,15 +11,18 @@ html = driver.page_source.encode('utf-8')
 page_num = 0
 outerHTML = ""
 
-while True:
-    driver.find_element_by_css_selector('#viewMoreButton').click()
-    page_num += 1
-    print("getting page number "+str(page_num))
-    time.sleep(1)
-    outerHTML_new = driver.execute_script("return document.documentElement.outerHTML")
-    if outerHTML == outerHTML_new:
-        break
-    outerHTML = outerHTML_new
+try:
+    while True:
+        driver.find_element_by_css_selector('#viewMoreButton').click()
+        page_num += 1
+        print("getting page number "+str(page_num))
+        time.sleep(1)
+        outerHTML_new = driver.execute_script("return document.documentElement.outerHTML")
+        if outerHTML == outerHTML_new:
+            break
+        outerHTML = outerHTML_new
+except Exception as e:
+    print('Aborting page load:', e)
 print('Done loading page')
 
 elems = driver.find_elements_by_xpath("//a[@href]")
