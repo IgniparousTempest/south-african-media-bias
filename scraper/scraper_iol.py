@@ -22,9 +22,9 @@ class IOLSpider(NewsSpider):
         article_text = '\n'.join(article_body)
         mentions = MentionsParser.calculate_mentions(article_text)
         year, month = self.get_month_year(response)
-        print(page_url, year, month)
+        # print(page_url, year, month)
         return {
-            'url': page_url,
+            'url': response.url,
             'year': year,
             'month': month,
             'anc': mentions.anc,

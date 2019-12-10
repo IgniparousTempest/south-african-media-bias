@@ -55,7 +55,7 @@ class TimesLiveSpider(scrapy.Spider):
                 mentions = MentionsParser.calculate_mentions(article_text)
                 year, month = self.get_month_year(response.url)
                 yield {
-                    'url': page_url,
+                    'url': response.url,
                     'year': year,
                     'month': month,
                     'anc': mentions.anc,
