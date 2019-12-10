@@ -12,8 +12,15 @@ def extract_urls(path_json: str) -> list:
 
 if __name__ == '__main__':
     import argparse
+    import sys
 
-    parser = argparse.ArgumentParser(description='Extracts the urls from a JSON file')
+    example_text = f"""example usage:
+  {sys.argv[0]} times_live.json times_live.urls --prepend https://www.timeslive.co.za/politics/
+    """
+    
+    parser = argparse.ArgumentParser(description='Extracts the urls from a JSON file',
+                                     epilog=example_text,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('in_file', metavar='IF', type=str, help='Input path to .json file')
     parser.add_argument('out_file', metavar='OF', type=str, help='Output path to .urls file')
     parser.add_argument('--prepend', type=str, help='Prepends text to the url')
