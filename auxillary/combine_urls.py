@@ -3,7 +3,6 @@ def combine_urls(*files: list) -> list:
     for path in files:
         with open(path, 'r') as f:
             ls = f.readlines()
-            print(ls)
             for url in ls:
                 url = url.rstrip('\n')
                 urls.append(url)
