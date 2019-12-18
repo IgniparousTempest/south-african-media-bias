@@ -20,6 +20,7 @@ class TimesLiveSpider(NewsSpider):
 
     @overrides
     def parse_politics_page(self, response: Response):
+        print('hit: ', response.url)
         page_url = self.get_politics_page_name_substring(response.url)
         for article in response.css('div.article-widgets'):
             text = article.get()
@@ -27,7 +28,7 @@ class TimesLiveSpider(NewsSpider):
             article_text = '\n'.join(article_body)
             mentions = MentionsParser.calculate_mentions(article_text)
             year, month = self.get_month_year(response.url)
-            yield {
+            return {
                 'url': response.url,
                 'year': year,
                 'month': month,
