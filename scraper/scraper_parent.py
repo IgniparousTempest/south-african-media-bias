@@ -1,5 +1,6 @@
 from pathlib import Path
 import re
+from typing import Optional
 
 import scrapy
 from scrapy.http import Response
@@ -27,8 +28,8 @@ class NewsSpider(scrapy.Spider):
             self.start_urls = [politics_page_url]
         super().__init__(**kwargs)  # python3
 
-    def is_in_domain(self, url: str) -> bool:
-        if url.startswith('/'):
+    def is_in_domain(self, url: str, parent_url: Optional[str] = None) -> bool:
+        if (parent_url is None or self.is_in_domain(parent_url)) and url.startswith('/'):
             url = self.domain_url + url
         return url.startswith(f'{self.domain_url}/')
 
@@ -53,5 +54,5 @@ class NewsSpider(scrapy.Spider):
             yield self.parse_politics_page(response)
 
         for href in response.css('a::attr(href)'):
-            if self.is_in_domain(href.get()):
+            if self.is_in_domain(href.get(), response.url):
                 yield response.follow(href, self.parse)

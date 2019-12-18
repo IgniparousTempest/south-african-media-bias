@@ -1,68 +1,50 @@
 import re
 
-import scrapy
+from overrides import overrides
 from scrapy.http import Response
 
 from scraper.mentions import MentionsParser
+from scraper.scraper_parent import NewsSpider
 
 
-class TimesLiveSpider(scrapy.Spider):
+class TimesLiveSpider(NewsSpider):
     name = 'times_live'
-    start_urls = [
-        'https://www.timeslive.co.za/politics/',
-    ]
 
     def __init__(self, start_urls_path=None, **kwargs):
-        if start_urls_path is not None:
-            with open(start_urls_path, 'r') as f:
-                self.start_urls = f.read().splitlines()
-        super().__init__(**kwargs)  # python3
+        super().__init__('times_live', 'https://www.timeslive.co.za/politics/', 'https://www.timeslive.co.za', r'https://www\.timeslive\.co\.za/politics/(.*)/', **kwargs)
 
-    @classmethod
-    def is_in_domain(cls, url: str) -> bool:
-        if url.startswith('/'):
-            url = 'https://www.timeslive.co.za' + url
-        return url.startswith('https://www.timeslive.co.za/')
-
-    @classmethod
-    def get_politics_page_name_substring(cls, url: str):
-        if url.startswith('/'):
-            url = 'https://www.timeslive.co.za' + url
-        return re.search(r'https://www\.timeslive\.co\.za/politics/(.*)/', url).group(1)
-
-    @classmethod
-    def get_month_year(cls, url: str):
-        page_url = cls.get_politics_page_name_substring(url)
+    def get_month_year(self, response: Response):
+        page_url = self.get_politics_page_name_substring(response.url)
         date_match = re.search(r'^(\d{4})-(\d{2})-\d{2}', page_url)
         return date_match.group(1), date_match.group(2)
 
-    @classmethod
-    def is_politics_page(cls, url: str) -> bool:
-        try:
-            cls.get_politics_page_name_substring(url)
-            return True
-        except AttributeError:
-            return False
+    @overrides
+    def parse_politics_page(self, response: Response):
+        page_url = self.get_politics_page_name_substring(response.url)
+        for article in response.css('div.article-widgets'):
+            text = article.get()
+            article_body = article.css(".article-widget:not([class*='article-widget-related_articles'])").xpath('.//text()').extract()
+            article_text = '\n'.join(article_body)
+            mentions = MentionsParser.calculate_mentions(article_text)
+            year, month = self.get_month_year(response.url)
+            yield {
+                'url': response.url,
+                'year': year,
+                'month': month,
+                'anc': mentions.anc,
+                'da': mentions.da,
+                'eff': mentions.eff,
+            }
 
-    def parse(self, response: Response):
-        # Parse politics pages
-        if self.is_politics_page(response.url):
-            page_url = self.get_politics_page_name_substring(response.url)
-            for article in response.css('div.article-widgets'):
-                text = article.get()
-                article_body = article.css(".article-widget:not([class*='article-widget-related_articles'])").xpath('.//text()').extract()
-                article_text = '\n'.join(article_body)
-                mentions = MentionsParser.calculate_mentions(article_text)
-                year, month = self.get_month_year(response.url)
-                yield {
-                    'url': response.url,
-                    'year': year,
-                    'month': month,
-                    'anc': mentions.anc,
-                    'da': mentions.da,
-                    'eff': mentions.eff,
-                }
 
-        for href in response.css('a::attr(href)'):
-            if self.is_in_domain(href.get()):
-                yield response.follow(href, self.parse)
+if __name__ == '__main__':
+    from scrapy.crawler import CrawlerProcess
+
+    process = CrawlerProcess({
+        'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)',
+        'FEED_FORMAT': 'json',
+        'FEED_URI': f'results/{TimesLiveSpider.name}.json'
+    })
+
+    process.crawl(TimesLiveSpider)
+    process.start()

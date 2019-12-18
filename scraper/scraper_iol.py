@@ -32,13 +32,14 @@ class IOLSpider(NewsSpider):
             'eff': mentions.eff,
         }
 
+
 if __name__ == '__main__':
     from scrapy.crawler import CrawlerProcess
 
     process = CrawlerProcess({
         'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)',
         'FEED_FORMAT': 'json',
-        'FEED_URI': 'results/iol.json'
+        'FEED_URI': f'results/{IOLSpider.name}.json'
     })
 
     process.crawl(IOLSpider)
