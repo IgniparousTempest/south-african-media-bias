@@ -56,3 +56,18 @@ class NewsSpider(scrapy.Spider):
         for href in response.css('a::attr(href)'):
             if self.is_in_domain(href.get(), response.url):
                 yield response.follow(href, self.parse)
+
+    @classmethod
+    def run(cls):
+        """Runs the scraper. This can be considered the main() method."""
+
+        from scrapy.crawler import CrawlerProcess
+
+        process = CrawlerProcess({
+            'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)',
+            'FEED_FORMAT': 'json',
+            'FEED_URI': f'results/{cls.name}.json'
+        })
+
+        process.crawl(cls)
+        process.start()
