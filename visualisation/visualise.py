@@ -1,3 +1,4 @@
+import functools
 import json
 from collections import defaultdict
 
@@ -9,6 +10,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 
+import results
 from visualisation.area_under_curve import auc
 
 
@@ -21,6 +23,15 @@ def determine_focus(entry: dict):
         return 'anc'
     else:
         return 'da'
+
+
+def publication_name(json_file_name: str) -> str:
+    return {
+        'times_live.json': 'Times Live',
+        'iol.json': 'IOL',
+        'news24.json': 'News24'
+    }[json_file_name]
+
 
 def counts(json_path: str) -> Tuple[dict, int]:
     number_of_articles = 0
@@ -39,7 +50,7 @@ def counts(json_path: str) -> Tuple[dict, int]:
         return results, number_of_articles
 
 
-def plot_stacked_area(from_year=2016):
+def plot_stacked_area(from_year: int):
     # Get data
     raw_data, number_of_articles = counts('../results/times_live.json')
 
@@ -83,8 +94,9 @@ def plot_stacked_area(from_year=2016):
     plt.show()
 
 
-def plot_separate_area(json_path, from_year=2016):
+def plot_separate_area(json_file_name: str, from_year: int):
     # Get data
+    json_path = results.absolute_path(json_file_name)
     raw_data, number_of_articles = counts(json_path)
 
     xs = []
@@ -112,6 +124,7 @@ def plot_separate_area(json_path, from_year=2016):
     data_perc = data.divide(data.sum(axis=1), axis=0)
 
     # Make the plot
+    pub_name = publication_name(json_file_name)
     pal = sns.color_palette("Set1")
     pal = pal[0:3]
     for data, seats, colour, name in zip([data_perc["eff"], data_perc["da"], data_perc["anc"]], [seats_perc["eff"], seats_perc["da"], seats_perc["anc"]], pal, ['EFF', 'DA', 'ANC']):
@@ -125,11 +138,40 @@ def plot_separate_area(json_path, from_year=2016):
         plt.stackplot(xs, data, labels=[name], colors=[colour])
         plt.legend(loc='upper left', title=f'{ratio}% Representation')
         plt.margins(0, 0)
-        plt.title(f'Times Live Political Focus on {name} (num articles={number_of_articles})')
+        plt.title(f'{pub_name} Political Focus on {name} (num articles={number_of_articles})')
         plt.show()
 
 
+def plot_number_of_articles_a_month(json_file_name: str, from_year: int):
+    # Get data
+    json_path = results.absolute_path(json_file_name)
+    raw_data, _ = counts(json_path)
+
+    xs = []
+    ys = []
+    for year in sorted(list(raw_data.keys())):
+        if int(year) < from_year:
+            continue
+        for month in sorted(list(raw_data[year].keys())):
+            xs.append(dt.datetime.fromisoformat(f'{year}-{month}-01'))
+            monthly_articles_count = functools.reduce(lambda acc, value: acc + value, raw_data[year][month].values())
+            print('articles:', monthly_articles_count)
+            ys.append(monthly_articles_count)
+
+    # Make the plot
+    pub_name = publication_name(json_file_name)
+    colour = sns.color_palette("Set1")[3]
+    axes = plt.gca()
+
+    plt.stackplot(xs, ys, labels=['articles'], colors=[colour])
+    plt.margins(0, 0)
+    plt.title(f'{pub_name} articles distribution')
+    plt.show()
+
+
 if __name__ == '__main__':
-    plot_stacked_area()
-    plot_separate_area('../results/times_live.json') 
-    plot_separate_area('../results/iol.json')
+    # plot_stacked_area(from_year=2016)
+    plot_separate_area('times_live.json', from_year=2016)
+    plot_separate_area('iol.json', from_year=2016)
+
+    plot_number_of_articles_a_month('times_live.json', from_year=2016)
