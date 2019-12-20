@@ -2,6 +2,8 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 import time
 
+import results
+
 url = "https://www.timeslive.co.za/politics/"
 options = Options()
 options.headless = True  # Enable to run over SSH
@@ -33,7 +35,7 @@ for elem in elems:
         links.append(href)
 print(f'Found {len(links)} links')
 # Write unique links to file
-with open('results/times_live.urls', 'w') as f:
+with open(results.absolute_path('times_live.urls'), 'w') as f:
     links = list(set(links))
     for elem in links:
         f.write(f'{elem}\n')
