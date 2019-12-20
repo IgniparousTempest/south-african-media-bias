@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+
+
 def combine_urls(*files: list) -> list:
     urls = []
     for path in files:
