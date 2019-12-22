@@ -12,6 +12,8 @@ The results as of DAY of MONTH YEAR are:
 
 The raw data used to plot these figures can be found in the *.json files in the [results folder](./results).
 
+These tools will not work indefinitely: if any of the websites change, the tools will no longer work.
+
 ## Prerequisites
 
 All instructions assume you are using Debian/Ubuntu. If you are running Windows or Mac, adjust them accordingly.
