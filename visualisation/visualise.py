@@ -1,12 +1,14 @@
 import functools
 import json
 from collections import defaultdict
+from pathlib import Path
 
 import datetime as dt
 from typing import Tuple
 
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 import seaborn as sns
 import pandas as pd
 
@@ -33,6 +35,11 @@ def publication_name(json_file_name: str) -> str:
     }[json_file_name]
 
 
+def save_image(plt, result_name: str, prepend: str):
+    name = results.absolute_path(f'{prepend}_{result_name}.png')
+    plt.savefig(name, bbox_inches='tight', dpi=200)
+
+
 def counts(json_path: str, start_year: int) -> Tuple[dict, int]:
     number_of_articles = 0
     results = defaultdict(lambda: defaultdict(lambda: {'anc': 0, 'da': 0, 'eff': 0}))
@@ -46,9 +53,6 @@ def counts(json_path: str, start_year: int) -> Tuple[dict, int]:
                 continue
             results[entry['year']][entry['month']][focus] += 1
             number_of_articles += 1
-        print(len(results))
-        print(len(data))
-        print()
         return results, number_of_articles
 
 
@@ -133,10 +137,19 @@ def plot_separate_area(json_file_name: str, from_year: int):
         axes = plt.gca()
         axes.set_ylim([0, 1])
 
+        # format the ticks
+        years = mdates.YearLocator()  # every year
+        months = mdates.MonthLocator()  # every month
+        years_fmt = mdates.DateFormatter('%Y')
+        axes.xaxis.set_major_locator(years)
+        axes.xaxis.set_major_formatter(years_fmt)
+        axes.xaxis.set_minor_locator(months)
+
         plt.stackplot(xs, data, labels=[name], colors=[colour])
         plt.legend(loc='upper left', title=f'{ratio}% Focus')
         plt.margins(0, 0)
         plt.title(f'{pub_name} Political Focus on {name} (num articles={number_of_articles_in_period})')
+        save_image(plt, f'{Path(json_file_name).stem}_{name.lower()}', 'results')
         plt.show()
 
 
@@ -153,7 +166,6 @@ def plot_number_of_articles_a_month(json_file_name: str, from_year: int = 0):
         for month in sorted(list(raw_data[year].keys())):
             xs.append(dt.datetime.fromisoformat(f'{year}-{month}-01'))
             monthly_articles_count = functools.reduce(lambda acc, value: acc + value, raw_data[year][month].values())
-            print('articles:', monthly_articles_count)
             ys.append(monthly_articles_count)
 
     # Make the plot
@@ -164,13 +176,14 @@ def plot_number_of_articles_a_month(json_file_name: str, from_year: int = 0):
     plt.stackplot(xs, ys, labels=['articles'], colors=[colour])
     plt.margins(0, 0)
     plt.title(f'{pub_name} articles distribution (total articles={number_of_articles_in_period})')
+    save_image(plt, Path(json_file_name).stem, 'articles')
     plt.show()
 
 
 if __name__ == '__main__':
     # plot_stacked_area(from_year=2016)
-    plot_separate_area('times_live.json', from_year=2016)
-    plot_separate_area('iol.json', from_year=2016)
+    plot_separate_area('times_live.json', from_year=2017)
+    plot_separate_area('iol.json', from_year=2015)
 
     plot_number_of_articles_a_month('times_live.json')
     plot_number_of_articles_a_month('iol.json')
