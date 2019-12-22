@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 import json
+from typing import List
 
 
-def get_unique_entries(path_json: str) -> list:
+def get_unique_entries(path_json: str) -> List[dict]:
     urls = []
     unique_entries = []
     with open(path_json, 'r') as f:
@@ -33,11 +34,12 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     entries = get_unique_entries(args.in_file)
+
+    # Format the output file in the same manner as scrapy
     with open(args.out_file, 'w') as f:
-        json.dump(entries, f)
-    with open(args.out_file, 'r') as f:
-        text = f.read()
-        text = text.replace('{', '\n{')
-        text = text.replace(']', '\n]')
-    with open(args.out_file, 'w') as f:
-        f.write(text)
+        print('[', file=f)
+        for i, entry in enumerate(entries):
+            comma = ',' if i < len(entries) - 1 else ''
+            string = json.dumps(entry)
+            print(f'{string}{comma}', file=f)
+        print(']', end='', file=f)
