@@ -33,12 +33,14 @@ def publication_name(json_file_name: str) -> str:
     }[json_file_name]
 
 
-def counts(json_path: str) -> Tuple[dict, int]:
+def counts(json_path: str, start_year: int) -> Tuple[dict, int]:
     number_of_articles = 0
     results = defaultdict(lambda: defaultdict(lambda: {'anc': 0, 'da': 0, 'eff': 0}))
     with open(json_path, 'r') as f:
         data = json.load(f)
         for entry in data:
+            if int(entry['year']) < start_year:
+                continue
             focus = determine_focus(entry)
             if focus is None:
                 continue
@@ -52,13 +54,11 @@ def counts(json_path: str) -> Tuple[dict, int]:
 
 def plot_stacked_area(from_year: int):
     # Get data
-    raw_data, number_of_articles = counts('../results/times_live.json')
+    raw_data, number_of_articles = counts('../results/times_live.json', from_year)
 
     xs = []
     anc, da, eff = [], [], []
     for year in sorted(list(raw_data.keys())):
-        if int(year) < from_year:
-            continue
         for month in sorted(list(raw_data[year].keys())):
             xs.append(dt.datetime.fromisoformat(f'{year}-{month}-01'))
             anc.append(raw_data[year][month]['anc'])
@@ -97,13 +97,11 @@ def plot_stacked_area(from_year: int):
 def plot_separate_area(json_file_name: str, from_year: int):
     # Get data
     json_path = results.absolute_path(json_file_name)
-    raw_data, number_of_articles = counts(json_path)
+    raw_data, number_of_articles_in_period = counts(json_path, from_year)
 
     xs = []
     anc, da, eff = [], [], []
     for year in sorted(list(raw_data.keys())):
-        if int(year) < from_year:
-            continue
         for month in sorted(list(raw_data[year].keys())):
             xs.append(dt.datetime.fromisoformat(f'{year}-{month}-01'))
             anc.append(raw_data[year][month]['anc'])
@@ -136,16 +134,16 @@ def plot_separate_area(json_file_name: str, from_year: int):
         axes.set_ylim([0, 1])
 
         plt.stackplot(xs, data, labels=[name], colors=[colour])
-        plt.legend(loc='upper left', title=f'{ratio}% Representation')
+        plt.legend(loc='upper left', title=f'{ratio}% Focus')
         plt.margins(0, 0)
-        plt.title(f'{pub_name} Political Focus on {name} (num articles={number_of_articles})')
+        plt.title(f'{pub_name} Political Focus on {name} (num articles={number_of_articles_in_period})')
         plt.show()
 
 
-def plot_number_of_articles_a_month(json_file_name: str, from_year: int):
+def plot_number_of_articles_a_month(json_file_name: str, from_year: int = 0):
     # Get data
     json_path = results.absolute_path(json_file_name)
-    raw_data, _ = counts(json_path)
+    raw_data, number_of_articles_in_period = counts(json_path, from_year)
 
     xs = []
     ys = []
@@ -165,7 +163,7 @@ def plot_number_of_articles_a_month(json_file_name: str, from_year: int):
 
     plt.stackplot(xs, ys, labels=['articles'], colors=[colour])
     plt.margins(0, 0)
-    plt.title(f'{pub_name} articles distribution')
+    plt.title(f'{pub_name} articles distribution (total articles={number_of_articles_in_period})')
     plt.show()
 
 
@@ -174,4 +172,5 @@ if __name__ == '__main__':
     plot_separate_area('times_live.json', from_year=2016)
     plot_separate_area('iol.json', from_year=2016)
 
-    plot_number_of_articles_a_month('times_live.json', from_year=2016)
+    plot_number_of_articles_a_month('times_live.json')
+    plot_number_of_articles_a_month('iol.json')
