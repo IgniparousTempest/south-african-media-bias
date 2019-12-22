@@ -32,6 +32,8 @@ def get_links_from_driver(driver: WebDriver) -> List[str]:
     links = []
     for elem in elems:
         href = elem.get_attribute("href")
+        if href.startswith('https://m.news24.com/'):  # Handle links from the mobile site
+            href = 'https://www' + href[9:]
         if href.startswith('https://www.news24.com/SouthAfrica/News/'):
             links.append(href)
     return links
