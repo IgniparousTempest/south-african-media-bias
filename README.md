@@ -37,6 +37,8 @@ Plot the results with:
     
 ## Output files
 
+Files are output into the `results/` directory, they are:
+
  * `*.urls`: These are the initial urls that the scraper will start the search on. Produced by the `scraper/initialisation_*` scripts.
  * `*.json`: These are the results files from scraping. Produced by the `scraper/scraper_*` scripts.
  * `*.stats`: These are the stats output from scrapy. They aren't really of interest to this project, but are fun to look at. Produced by the `scraper/scraper_*` scripts.
