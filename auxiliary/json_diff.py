@@ -7,10 +7,9 @@ def are_json_entries_the_same(a: dict, b: dict) -> bool:
     if len(a.keys()) is not len(b.keys()):
         return False
     for k in a.keys():
-        if a[k] is not b[k]:
+        if a[k] != b[k]:
             return False
     return True
-
 
 
 def difference_between_json_files(json_path_a: str, json_path_b: str) -> Tuple[List[str], List[str], List[str], List[str]]:

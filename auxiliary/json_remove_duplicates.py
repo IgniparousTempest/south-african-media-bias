@@ -17,6 +17,17 @@ def get_unique_entries(path_json: str) -> List[dict]:
     return unique_entries
 
 
+def print_json_in_scrapy_style(output_file_path: str, data: List[dict]):
+    """Format the output file in the same manner as scrapy"""
+    with open(output_file_path, 'w') as f:
+        print('[', file=f)
+        for i, entry in enumerate(data):
+            comma = ',' if i < len(data) - 1 else ''
+            string = json.dumps(entry)
+            print(f'{string}{comma}', file=f)
+        print(']', end='', file=f)
+
+
 if __name__ == '__main__':
     import argparse
     import sys
@@ -36,10 +47,4 @@ if __name__ == '__main__':
     entries = get_unique_entries(args.in_file)
 
     # Format the output file in the same manner as scrapy
-    with open(args.out_file, 'w') as f:
-        print('[', file=f)
-        for i, entry in enumerate(entries):
-            comma = ',' if i < len(entries) - 1 else ''
-            string = json.dumps(entry)
-            print(f'{string}{comma}', file=f)
-        print(']', end='', file=f)
+    print_json_in_scrapy_style(args.out_file, entries)
