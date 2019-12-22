@@ -54,3 +54,5 @@ Some auxiliary tools are provided to help scraping.
 `auxiliary/json_remove_duplicates.py` removes duplicate entries from a json file. Sometimes the .json file will have multiple output blocks in it. No idea why this happens, might be a threading bug in scrapy.
 
 `auxiliary/json_diff.py` compares two .json files and prints differences. Useful if you have two scrapes of the same site and want to compare them before merging.
+
+`auxiliary/json_merge.py` merges two .json files and prints them to a new file. Useful if you have a new scrape to merge with an older one. This shouldn't really be necessary.

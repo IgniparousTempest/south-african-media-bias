@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))  # Needed to get 'auxiliary' module.
+
 import json
 import warnings
 from typing import List
@@ -27,10 +31,9 @@ def merge_json_files(json_path_a: str, json_path_b: str, keys_in_a: List[str], k
 
 if __name__ == '__main__':
     import argparse
-    import sys
 
     example_text = f"""example usage:
-  {sys.argv[0]} times_live.json times_live.json.old
+  {sys.argv[0]} times_live.json times_live.json.old times_live.json
 
 Caveats:
   * If json files have entries with differing values, the entries in the first file are used.
