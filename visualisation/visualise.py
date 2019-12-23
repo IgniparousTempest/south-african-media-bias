@@ -184,6 +184,8 @@ if __name__ == '__main__':
     # plot_stacked_area(from_year=2016)
     plot_separate_area('times_live.json', from_year=2017)
     plot_separate_area('iol.json', from_year=2015)
+    plot_separate_area('news24.json', from_year=2015)
 
     plot_number_of_articles_a_month('times_live.json')
     plot_number_of_articles_a_month('iol.json')
+    plot_number_of_articles_a_month('news24.json')

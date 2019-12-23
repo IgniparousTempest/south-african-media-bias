@@ -27,7 +27,10 @@ class News24Spider(NewsSpider):
 
     def get_month_year(self, url: str) -> Tuple[str, str]:
         # format: https://www.news24.com/SouthAfrica/News/sa-born-man-tells-of-moment-he-apprehended-london-bridge-attacker-20191221
-        iso_date_string = url.split('-')[-1]
+        tokens = url.split('-')
+        iso_date_string = tokens[-1]
+        if len(iso_date_string) != 8:
+            iso_date_string = tokens[-2]  # Sometimes there is a trailing '-2' or '-3' after the date, for some reason.
         return iso_date_string[0:4], iso_date_string[4:6]
 
     def is_mobile(self, url: str) -> bool:
