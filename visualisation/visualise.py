@@ -56,9 +56,10 @@ def counts(json_path: str, start_year: int) -> Tuple[dict, int]:
         return results, number_of_articles
 
 
-def plot_stacked_area(from_year: int):
+def plot_stacked_area(json_file_name: str, from_year: int):
     # Get data
-    raw_data, number_of_articles = counts('../results/times_live.json', from_year)
+    json_path = results.absolute_path(json_file_name)
+    raw_data, number_of_articles = counts(json_path, from_year)
 
     xs = []
     anc, da, eff = [], [], []
@@ -71,23 +72,12 @@ def plot_stacked_area(from_year: int):
 
     data = pd.DataFrame({'anc': anc, 'da': da, 'eff': eff, }, index=xs)
 
-    # Seats data
-    election_2014 = [249, 89, 25]
-    election_2019 = [230, 84, 44]
-    elections = np.array([election_2014, election_2014, election_2019, election_2019])
-    seats_xs = [xs[0], dt.datetime.fromisoformat('2019-05-07'), dt.datetime.fromisoformat('2019-05-08'), xs[-1]]
-    seats = pd.DataFrame({'anc': elections[:,0], 'da': elections[:,1], 'eff': elections[:,2], }, index=seats_xs)
-    seats_perc = seats.divide(seats.sum(axis=1), axis=0)
-    del seats_perc['anc']
-    seats_perc['da'] = seats_perc['da'] + seats_perc['eff']
-
     # We need to transform the data from raw data to percentage (fraction)
     data_perc = data.divide(data.sum(axis=1), axis=0)
 
     # Make the plot
     pal = sns.color_palette("Set1")
     pal = pal[0:3]
-    plt.plot(seats_xs, seats_perc, color='w')
     axes = plt.gca()
     axes.set_ylim([0, 1])
 
@@ -95,6 +85,7 @@ def plot_stacked_area(from_year: int):
     plt.legend(loc='upper left')
     plt.margins(0, 0)
     plt.title(f'Times Live Political Focus (num articles={number_of_articles})')
+    save_image(plt, Path(json_file_name).stem, 'stacked_area')
     plt.show()
 
 
@@ -145,7 +136,7 @@ def plot_separate_area(json_file_name: str, from_year: int):
         axes.xaxis.set_major_formatter(years_fmt)
         axes.xaxis.set_minor_locator(months)
 
-        plt.stackplot(xs, data, labels=[name], colors=[colour])
+        plt.stackplot(xs, data, labels=[f'% {name} representation'], colors=[colour])
         plt.legend(loc='upper left', title=f'{ratio}% Focus')
         plt.margins(0, 0)
         plt.title(f'{pub_name} Political Focus on {name} (num articles={number_of_articles_in_period})')
@@ -175,13 +166,14 @@ def plot_number_of_articles_a_month(json_file_name: str, from_year: int = 0):
 
     plt.stackplot(xs, ys, labels=['articles'], colors=[colour])
     plt.margins(0, 0)
-    plt.title(f'{pub_name} articles distribution (total articles={number_of_articles_in_period})')
+    plt.title(f'Monthly {pub_name} articles distribution (total articles={number_of_articles_in_period})')
     save_image(plt, Path(json_file_name).stem, 'articles')
     plt.show()
 
 
 if __name__ == '__main__':
-    # plot_stacked_area(from_year=2016)
+    plot_stacked_area('times_live.json', from_year=2016)
+
     plot_separate_area('times_live.json', from_year=2017)
     plot_separate_area('iol.json', from_year=2015)
     plot_separate_area('news24.json', from_year=2015)
