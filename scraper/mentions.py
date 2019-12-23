@@ -16,6 +16,7 @@ class MentionsParser:
         anc, da, eff = 0, 0, 0
 
         # Acronym occurrences
+        # TODO: Possessives don't work (DA's), what else have I forgotten?
         anc += words.count('ANC') + text_lower.count('african national congress')
         da += words.count('DA') + text_lower.count('democratic alliance')
         eff += words.count('EFF') + text_lower.count('economic freedom fighters')

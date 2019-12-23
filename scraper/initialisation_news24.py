@@ -61,7 +61,7 @@ def get_links_on_mobile_website(driver: WebDriver) -> List[str]:
         while True:
             driver.find_element_by_css_selector('#btn_showmore').click()
             page_num += 1
-            print("getting page number " + str(page_num))
+            print(f'getting page number {str(page_num)}')
             time.sleep(1)
             outer_html_new = driver.execute_script("return document.documentElement.outerHTML")
             if outer_html == outer_html_new:
