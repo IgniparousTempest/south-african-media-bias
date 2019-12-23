@@ -35,6 +35,7 @@ class NewsSpider(scrapy.Spider):
         dispatcher.connect(self.on_spider_closed, signals.spider_closed)
 
     def is_in_domain(self, url: str, parent_url: Optional[str] = None) -> bool:
+        # TODO: Use urljoin(parent_url, url)
         if (parent_url is None or self.is_in_domain(parent_url)) and url.startswith('/'):
             url = self.domain_url + url
         return url.startswith(f'{self.domain_url}/')

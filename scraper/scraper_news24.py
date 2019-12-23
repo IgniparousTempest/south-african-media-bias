@@ -1,4 +1,3 @@
-import re
 from typing import Tuple
 
 from overrides import overrides
@@ -6,6 +5,8 @@ from scrapy.http import Response
 
 from scraper.mentions import MentionsParser
 from scraper.scraper_parent import NewsSpider
+
+from urllib.parse import urlsplit, urlunsplit, urljoin, SplitResult
 
 
 class News24Spider(NewsSpider):
@@ -36,15 +37,19 @@ class News24Spider(NewsSpider):
     def parse(self, response: Response):
         if self.is_mobile(response.url):
             # Parse mobile politics page
-            self.parse_politics_page(response)
+            yield self.parse_politics_page(response)
         else:
             # Go to mobile page instead
             if self.is_politics_page(response.url):
                 yield response.follow(response.url.replace('www', 'm', 1), self.parse)
 
             for href in response.css('a::attr(href)'):
+                absolute_url = urljoin(response.url, href.get())  # Make relative links absolute
                 if self.is_in_domain(href.get(), response.url):
-                    yield response.follow(href, self.parse)
+                    # Remove parameters
+                    o: SplitResult = urlsplit(absolute_url)
+                    base_href = urlunsplit((o.scheme, o.netloc, o.path, '', ''))
+                    yield response.follow(base_href, self.parse)
 
     @overrides
     def parse_politics_page(self, response: Response):
