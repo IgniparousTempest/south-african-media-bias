@@ -1,6 +1,6 @@
 # South African Media Bias
 
-This project calculates the over or under representation in the media of the three biggest political parties: [ANC](https://en.wikipedia.org/wiki/African_National_Congress), [DA](https://en.wikipedia.org/wiki/Democratic_Alliance_(South_Africa\)), and [EFF](https://en.wikipedia.org/wiki/Economic_Freedom_Fighters).
+This project calculates the over or under representation in the media of the three biggest political parties: [ANC](https://en.wikipedia.org/wiki/African_National_Congress), [DA](https://en.wikipedia.org/wiki/Democratic_Alliance_(South_Africa)), and [EFF](https://en.wikipedia.org/wiki/Economic_Freedom_Fighters).
 
 It was prompted by a discussion between Helen Zille and Ferial Haffajee on [Tea with Helen](https://www.youtube.com/embed/3Fqoiz-Iyko?start=470&end=571), where Ms Haffajee claimed, in part, that the EFF is reported on proportionally to their vote share. I wanted to test that claim, and do a bit of _"political"_ data science.
 
@@ -12,27 +12,19 @@ The results as of 23rd of 12 2019 are:
 
 ##### News24
 
-<img src="./results/results_news24_anc.png" alt="drawing" width="326"/>
-<img src="./results/results_news24_da.png" alt="drawing" width="326"/>
-<img src="./results/results_news24_eff.png" alt="drawing" width="326"/>
+<img src="./results/results_news24_anc.png" alt="drawing" width="291"/><img src="./results/results_news24_da.png" alt="drawing" width="291"/><img src="./results/results_news24_eff.png" alt="drawing" width="291"/>
 
 ##### Times Live
 
-<img src="./results/results_times_live_anc.png" alt="drawing" width="326"/>
-<img src="./results/results_times_live_da.png" alt="drawing" width="326"/>
-<img src="./results/results_times_live_eff.png" alt="drawing" width="326"/>
+<img src="./results/results_times_live_anc.png" alt="drawing" width="291"/><img src="./results/results_times_live_da.png" alt="drawing" width="291"/><img src="./results/results_times_live_eff.png" alt="drawing" width="291"/>
 
 ##### IOL
 
-<img src="./results/results_iol_anc.png" alt="drawing" width="326"/>
-<img src="./results/results_iol_da.png" alt="drawing" width="326"/>
-<img src="./results/results_iol_eff.png" alt="drawing" width="326"/>
+<img src="./results/results_iol_anc.png" alt="drawing" width="291"/><img src="./results/results_iol_da.png" alt="drawing" width="291"/><img src="./results/results_iol_eff.png" alt="drawing" width="291"/>
 
 ##### Pages scraped
 
-<img src="./results/articles_news24.png" alt="drawing" width="326"/>
-<img src="./results/articles_times_live.png" alt="drawing" width="326"/>
-<img src="./results/articles_iol.png" alt="drawing" width="326"/>
+<img src="./results/articles_news24.png" alt="drawing" width="291"/><img src="./results/articles_times_live.png" alt="drawing" width="291"/><img src="./results/articles_iol.png" alt="drawing" width="291"/>
 
 The raw data used to plot these figures can be found in the *.json files in the [results folder](./results).
 
