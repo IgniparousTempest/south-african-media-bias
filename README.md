@@ -12,19 +12,19 @@ The results as of 23rd of 12 2019 are:
 
 ##### News24
 
-<img src="./results/results_news24_anc.png" alt="drawing" width="291"/><img src="./results/results_news24_da.png" alt="drawing" width="291"/><img src="./results/results_news24_eff.png" alt="drawing" width="291"/>
+<img src="./results/results_news24_anc.png" alt="drawing" width="288"/><img src="./results/results_news24_da.png" alt="drawing" width="288"/><img src="./results/results_news24_eff.png" alt="drawing" width="288"/>
 
 ##### Times Live
 
-<img src="./results/results_times_live_anc.png" alt="drawing" width="291"/><img src="./results/results_times_live_da.png" alt="drawing" width="291"/><img src="./results/results_times_live_eff.png" alt="drawing" width="291"/>
+<img src="./results/results_times_live_anc.png" alt="drawing" width="288"/><img src="./results/results_times_live_da.png" alt="drawing" width="288"/><img src="./results/results_times_live_eff.png" alt="drawing" width="288"/>
 
 ##### IOL
 
-<img src="./results/results_iol_anc.png" alt="drawing" width="291"/><img src="./results/results_iol_da.png" alt="drawing" width="291"/><img src="./results/results_iol_eff.png" alt="drawing" width="291"/>
+<img src="./results/results_iol_anc.png" alt="drawing" width="288"/><img src="./results/results_iol_da.png" alt="drawing" width="288"/><img src="./results/results_iol_eff.png" alt="drawing" width="288"/>
 
 ##### Pages scraped
 
-<img src="./results/articles_news24.png" alt="drawing" width="291"/><img src="./results/articles_times_live.png" alt="drawing" width="291"/><img src="./results/articles_iol.png" alt="drawing" width="291"/>
+<img src="./results/articles_news24.png" alt="drawing" width="288"/><img src="./results/articles_times_live.png" alt="drawing" width="288"/><img src="./results/articles_iol.png" alt="drawing" width="288"/>
 
 The raw data used to plot these figures can be found in the *.json files in the [results folder](./results).
 
