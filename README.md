@@ -8,7 +8,7 @@ The media outlets examined are the South African news outlets with the highest A
 
 The politics pages of these outlets were scraped. The number of articles about each political party was recorded. A article was determined to be about a particular party based on the number of mentions of that party on the page.
 
-The results as of 23rd of 12 2019 are:
+The results as of 23rd of Decemeber 2019 are:
 
 ##### News24
 
