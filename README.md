@@ -74,3 +74,7 @@ Some auxiliary tools are provided to help scraping.
 `auxiliary/json_diff.py` compares two .json files and prints differences. Useful if you have two scrapes of the same site and want to compare them before merging.
 
 `auxiliary/json_merge.py` merges two .json files and prints them to a new file. Useful if you have a new scrape to merge with an older one. This shouldn't really be necessary.
+
+## Thoughts and Future Work
+
+The discontinuous vote share function I have used in the results, may be the wrong approach, a continuous straight line or a spline may be a better approach. Voter sentiment is not discreet, but continuous. This may be a better way to moddel voter sentiment.
