@@ -6,9 +6,11 @@ It was prompted by a discussion between Helen Zille and Ferial Haffajee on [Tea 
 
 The media outlets examined are the South African news outlets with the highest Alexa rank, which is a fair summary of the South African media. The outlets are [News24](https://www.alexa.com/siteinfo/news24.com), [IOL](https://www.alexa.com/siteinfo/iol.co.za), and the [Times](https://www.alexa.com/siteinfo/timeslive.co.za). Only their politics pages were examined. This research adheres to the ToS and robots.txt of the examined websites.
 
-The politics pages of these outlets were scraped. The number of articles about each political party was recorded. A article was determined to be about a particular party based on the number of mentions of that party on the page.
+The politics pages of these outlets were scraped. The number of articles about each political party was recorded. The focus of an article was determined based on the number of mentions of a party on the page. This metric covers the case that seemed to occur often, where the headline is about one party, but the body of the article was about the reaction to the event by a different party.
 
-The results as of 23rd of Decemeber 2019 are:
+## Results
+
+The results as of 23rd of Decemeber 2019 are below. In all three outlets the EFF are over focused aby nearly double compared to their share of the vote, the DA are proportionally focused, and the ANC are underfocused.
 
 ##### News24
 
